@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+{% set stats = stats|default({}) %}
+{% set trips = trips|default([]) %}
+{% set recent_notes = recent_notes|default([]) %}
+{% block title %}Dashboard — Travel Planner{% endblock %}
+
+{% block content %}
+<div class="row gx-4 gy-4">
+  <!-- Overview cards -->
+  <div class="col-12">
+    <div class="d-flex flex-wrap gap-3">
+      <div class="card" style="min-width:220px; flex:1;">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="kicker">Upcoming</div>
+            <h3 class="mb-0"> {{ stats.upcoming or 0 }} trips</h3>
+            <div class="text-muted-contrast">Next: {{ stats.next_trip or '—' }}</div>
+          </div>
+          <div class="text-end">
+            <span class="badge">Soon</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="min-width:220px; flex:1;">
+        <div>
+          <div class="kicker">Completed</div>
+          <h3 class="mb-0">{{ stats.completed or 0 }}</h3>
+          <div class="text-muted-contrast">Total past trips</div>
+        </div>
+      </div>
+
+      <div class="card" style="min-width:220px; flex:1;">
+        <div>
+          <div class="kicker">Saved</div>
+          <h3 class="mb-0">{{ stats.saved_places or 0 }}</h3>
+          <div class="text-muted-contrast">Places & notes</div>
+        </div>
+      </div>
+
+      <div class="card" style="min-width:220px; flex:1;">
+        <div>
+          <div class="kicker">Budget</div>
+          <h3 class="mb-0">${{ stats.budget or '0' }}</h3>
+          <div class="text-muted-contrast">Planned spend</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="col-lg-8">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h4 class="mb-0">Your Trips</h4>
+      <a href="{{ url_for('new_trip') }}" class="btn btn-primary">+ New Trip</a>
+    </div>
+
+    {% if trips %}
+      <div class="card trips-card">
+        <table class="table mb-0">
+          <thead>
+            <tr>
+              <th>Trip</th>
+              <th>Dates</th>
+              <th>Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for t in trips %}
+            <tr>
+              <td>
+                <strong>{{ t.title }}</strong>
+                <div class="text-muted-contrast small">{{ t.destination }}</div>
+              </td>
+              <td>{{ t.start_date }} — {{ t.end_date }}</td>
+              <td>
+                {% if t.status == 'upcoming' %}
+                  <span class="badge" style="background: rgba(6,182,180,0.12); color:var(--accent);">Upcoming</span>
+                {% elif t.status == 'completed' %}
+                  <span class="badge" style="background: rgba(255,255,255,0.03);">Completed</span>
+                {% else %}
+                  <span class="badge">Draft</span>
+                {% endif %}
+              </td>
+              <td class="text-end">
+                <a href="{{ url_for('view_trip', trip_id=t.id) }}" class="btn btn-outline btn-sm">Open</a>
+                <a href="{{ url_for('edit_trip', trip_id=t.id) }}" class="btn btn-outline btn-sm">Edit</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="card text-center">
+        <h5 class="mb-2">No trips yet</h5>
+        <p class="text-muted-contrast mb-3">Create your first trip to get started — itineraries, packing lists and notes will be saved here.</p>
+        <a href="{{ url_for('new_trip') }}" class="btn btn-primary">Create a Trip</a>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- Sidebar -->
+  <div class="col-lg-4">
+    <div class="card mb-3">
+      <div class="d-flex align-items-center gap-3">
+        <div style="width:64px; height:64px; border-radius:12px; background:linear-gradient(180deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; color:#002;">
+          <strong>{{ current_user.initials or 'U' }}</strong>
+        </div>
+        <div>
+          <div style="font-weight:700;">{{ current_user.name or 'User' }}</div>
+          <div class="text-muted-contrast small">{{ current_user.email or '' }}</div>
+        </div>
+      </div>
+      <hr style="border-color:var(--border); margin:12px 0;">
+      <div class="d-grid gap-2">
+        <a href="{{ url_for('profile') }}" class="btn btn-outline">Profile</a>
+        <a href="{{ url_for('settings') }}" class="btn btn-outline">Settings</a>
+      </div>
+    </div>
+
+    <div class="card mb-3">
+      <div class="kicker">Quick Actions</div>
+      <div class="d-grid gap-2 mt-2">
+        <a href="{{ url_for('new_trip') }}" class="btn btn-primary">Start new trip</a>
+        <a href="{{ url_for('import_trips') }}" class="btn btn-outline">Import trips</a>
+        <a href="{{ url_for('export_data') }}" class="btn btn-outline">Export data</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="kicker">Recent Notes</div>
+      <ul class="list-unstyled mt-2 mb-0">
+        {% for note in recent_notes[:5] %}
+          <li style="padding:8px 0; border-bottom:1px solid var(--border);">
+            <div style="font-weight:600;">{{ note.title }}</div>
+            <div class="text-muted-contrast small">{{ note.excerpt }}</div>
+          </li>
+        {% else %}
+          <li class="text-muted-contrast">No notes yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}

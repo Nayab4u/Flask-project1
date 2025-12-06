@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{{ trip.title or trip.destination }} — Trip{% endblock %}
+{% block content %}
+<div class="card" style="max-width:800px;margin:0 auto;">
+  <h3 class="mb-3">{{ trip.title or trip.destination }}</h3>
+  <dl class="row">
+    <dt class="col-sm-3">Destination</dt><dd class="col-sm-9">{{ trip.destination }}</dd>
+    <dt class="col-sm-3">Dates</dt><dd class="col-sm-9">{{ trip.start_date or '—' }} — {{ trip.end_date or '—' }}</dd>
+    <dt class="col-sm-3">Travelers</dt><dd class="col-sm-9">{{ trip.travelers }}</dd>
+    <dt class="col-sm-3">Budget</dt><dd class="col-sm-9">{{ trip.budget_preference }} — {{ trip.total_budget or 'N/A' }}</dd>
+    <dt class="col-sm-3">Notes</dt><dd class="col-sm-9">{{ trip.summary or 'No notes' }}</dd>
+  </dl>
+  <a href="{{ url_for('dashboard') }}" class="btn btn-outline">Back</a>
+  <a href="{{ url_for('new_trip') }}" class="btn btn-primary">New Trip</a>
+
+  <!-- Delete button -->
+  <form method="post" action="{{ url_for('delete_trip', trip_id=trip.id) }}" style="display:inline" onsubmit="return confirm('Delete this trip? This cannot be undone.');">
+    <button type="submit" class="btn btn-danger">Delete</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="text-center py-5">
+  <h1>Plan your next trip</h1>
+  <p class="lead">Estimate budget, add activities, download a trip plan PDF.</p>
+  <a href="{{ url_for('new_trip') }}" class="btn btn-primary">Plan a Trip</a>
+</div>
+{% endblock %}

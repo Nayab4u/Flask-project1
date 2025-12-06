@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Profile — Travel Planner{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+  <h4>Profile</h4>
+  <p><strong>Username:</strong> {{ current_user.username }}</p>
+  <p><strong>Email:</strong> {{ current_user.email }}</p>
+  <p><strong>Admin:</strong> {% if current_user.is_admin %}Yes{% else %}No{% endif %}</p>
+  <a href="{{ url_for('dashboard') }}" class="btn btn-outline">Back to Dashboard</a>
+</div>
+{% endblock %}

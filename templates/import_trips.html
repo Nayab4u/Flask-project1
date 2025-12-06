@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Import Trips — Travel Planner{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 0 auto;">
+  <h4>Import Trips</h4>
+  <p class="text-muted-contrast">Upload a CSV file to import trips.</p>
+  <form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+      <input type="file" name="file" class="form-control" accept=".csv">
+    </div>
+    <button type="submit" class="btn btn-primary">Import</button>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline">Cancel</a>
+  </form>
+</div>
+{% endblock %}

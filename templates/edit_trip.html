@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Edit Trip — Travel Planner{% endblock %}
+{% block content %}
+<div class="card" style="max-width:800px;margin:0 auto;">
+  <h3>Edit Trip</h3>
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Title</label>
+      <input name="title" class="form-control" value="{{ trip.title or '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Destination</label>
+      <input name="destination" class="form-control" value="{{ trip.destination or '' }}" required>
+    </div>
+    <div class="row g-2">
+      <div class="col">
+        <label class="form-label">Start Date</label>
+        <input type="date" name="start_date" class="form-control" value="{{ trip.start_date }}">
+      </div>
+      <div class="col">
+        <label class="form-label">End Date</label>
+        <input type="date" name="end_date" class="form-control" value="{{ trip.end_date }}">
+      </div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Travelers</label>
+      <input type="number" name="travelers" min="1" class="form-control" value="{{ trip.travelers or 1 }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Budget preference</label>
+      <select name="budget_preference" class="form-control">
+        <option value="budget" {% if trip.budget_preference=='budget' %}selected{% endif %}>Budget</option>
+        <option value="medium" {% if trip.budget_preference=='medium' %}selected{% endif %}>Medium</option>
+        <option value="luxury" {% if trip.budget_preference=='luxury' %}selected{% endif %}>Luxury</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Total budget</label>
+      <input name="total_budget" class="form-control" value="{{ trip.total_budget or '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Notes</label>
+      <textarea name="summary" class="form-control" rows="4">{{ trip.summary or '' }}</textarea>
+    </div>
+
+    <button class="btn btn-primary">Save</button>
+    <a class="btn btn-outline" href="{{ url_for('view_trip', trip_id=trip.id) }}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

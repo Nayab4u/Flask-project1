@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="container">
+  <h2>Admin Dashboard</h2>
+
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5>Total Users</h5>
+          <p class="h3">{{ users|length }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center">
+        <div class="card-body">
+          <h5>Total Trips</h5>
+          <p class="h3">{{ trips|length }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h4>Quick Actions</h4>
+  <div class="mb-3">
+    <a href="{{ url_for('admin_users') }}" class="btn btn-primary">Manage Users</a>
+    <a href="{{ url_for('admin_export_all') }}" class="btn btn-secondary">Export All Trips</a>
+  </div>
+
+  <h4>Recent Trips</h4>
+  <table class="table table-sm">
+    <thead>
+      <tr><th>ID</th><th>User</th><th>Destination</th><th>Dates</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      {% for t in trips[:10] %}
+      <tr>
+        <td>{{ t.id }}</td>
+        <td>{{ t.user.username }}</td>
+        <td>{{ t.destination }}</td>
+        <td>{{ t.start_date or '—' }} to {{ t.end_date or '—' }}</td>
+        <td>{{ t.status }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

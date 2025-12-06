@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Settings — Travel Planner{% endblock %}
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+  <h4>Settings</h4>
+  <div class="mb-3">
+    <h5>Account</h5>
+    <p><strong>Username:</strong> {{ current_user.username }}</p>
+    <p><strong>Email:</strong> {{ current_user.email }}</p>
+  </div>
+  <hr>
+  <div class="mb-3">
+    <h5>Preferences</h5>
+    <p>More settings coming soon...</p>
+  </div>
+  <a href="{{ url_for('dashboard') }}" class="btn btn-outline">Back to Dashboard</a>
+</div>
+{% endblock %}

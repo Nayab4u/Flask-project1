@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Trip PDF</title></head>
+<body>
+  <h1>Trip Plan: {{ trip.destination }}</h1>
+  <p>{{ trip.start_date }} → {{ trip.end_date }}</p>
+  <p>Travelers: {{ trip.travelers }}</p>
+  <h3>Budget</h3>
+  <ul>
+    <li>Hotel: {{ budget.hotel }}</li>
+    <li>Food: {{ budget.food }}</li>
+    <li>Transport: {{ budget.transport }}</li>
+    <li>Activities: {{ budget.activities }}</li>
+    <li>Misc: {{ budget.misc }}</li>
+    <li><strong>Total: {{ budget.total }}</strong></li>
+  </ul>
+  <h3>Activities</h3>
+  <ul>
+    {% for a in activities %}
+      <li>{{ a.activity_name }} — ${{ a.cost }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

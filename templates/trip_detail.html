@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h3>{{ trip.destination }}</h3>
+    <p>{{ trip.start_date }} → {{ trip.end_date }}</p>
+    <p>Travelers: {{ trip.travelers }}</p>
+    <p><strong>Total estimated budget: ${{ budget.total }}</strong></p>
+
+    <h5>Breakdown</h5>
+    <ul>
+      <li>Hotel: ${{ budget.hotel }}</li>
+      <li>Food: ${{ budget.food }}</li>
+      <li>Transport: ${{ budget.transport }}</li>
+      <li>Activities: ${{ budget.activities }}</li>
+      <li>Misc: ${{ budget.misc }}</li>
+    </ul>
+
+    <a class="btn btn-outline-primary" href="{{ url_for('trip_pdf', trip_id=trip.id) }}">Download PDF</a>
+  </div>
+
+  <div class="col-md-4">
+    <h5>Add Activity</h5>
+    <form method="POST">
+      {{ activity_form.hidden_tag() }}
+      <div class="mb-2">{{ activity_form.activity_name.label }} {{ activity_form.activity_name(class_="form-control") }}</div>
+      <div class="mb-2">{{ activity_form.cost.label }} {{ activity_form.cost(class_="form-control") }}</div>
+      <div class="mb-2">{{ activity_form.category.label }} {{ activity_form.category(class_="form-control") }}</div>
+      <div>{{ activity_form.submit(class_="btn btn-primary") }}</div>
+    </form>
+
+    <h5 class="mt-4">Activities</h5>
+    <ul class="list-group">
+      {% for a in activities %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ a.activity_name }} <span class="badge bg-primary rounded-pill">${{ a.cost }}</span>
+        </li>
+      {% else %}
+        <li class="list-group-item">No activities yet.</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}
